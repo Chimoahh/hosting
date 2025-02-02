@@ -40,18 +40,14 @@ STORAGES = {
 }
 
 
-CONNECTION = os.environ['AZURE_POSTGRESQL_CONNECTION_STRING']
-CONNECTION_STR = {pair.split('=')[0]: pair.split('=')[1] for pair in CONNECTION.split(' ')}
 
+# Replace the SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': CONNECTION_STR['dbname'], 
-        'HOST': CONNECTION_STR['host'], 
-        'USER': CONNECTION_STR['user'],
-        'PASSWORD': CONNECTION_STR['password'],
-        
-    }
-}
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default=os.environ["DATABASE_URL"],
+        conn_max_age=600
+    )
+} 
 
 STATIC_ROOT =  BASE_DIR / 'staticfiles'
